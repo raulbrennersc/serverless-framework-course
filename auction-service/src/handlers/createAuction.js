@@ -13,7 +13,11 @@ async function createAuction(event, context) {
     title,
     status: 'OPEN',
     createdAt: now.toISOString(),
+    highestBid: {
+      amount: 0,
+    }
   }
+
   try{
     await dynamoDB.put({
       TableName: process.env.AUCTIONS_TABLE_NAME,
