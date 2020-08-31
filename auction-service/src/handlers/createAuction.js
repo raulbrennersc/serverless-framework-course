@@ -13,9 +13,9 @@ async function auction(event, context) {
     status: 'OPEN',
     createdAt: now.toISOString(),
   }
-
+  
   await dynamoDB.put({
-    TableName: 'AuctionsTable',
+    TableName: process.env.AUCTIONS_TABLE_NAME,
     Item: auction,
   }).promise();
 
