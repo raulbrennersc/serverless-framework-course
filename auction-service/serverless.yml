@@ -59,7 +59,7 @@ functions:
     #   - schedule: rate(1 minute)
 
 custom:
-  authorizer: arn:aws:cloudformation:#{AWS::Region}:#{AWS::AccountId}:stack/serverless-auth0-authorizer-${self:provider.stage}/ed2f5300-ec4d-11ea-ab32-06f1e86b317a
+  authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:serverless-auth0-authorizer-dev-auth
   AuctionsTable:
     name: !Ref AuctionsTable
     arn: !GetAtt AuctionsTable.Arn
