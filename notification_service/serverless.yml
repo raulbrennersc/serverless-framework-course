@@ -13,9 +13,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   
 functions:
-  hello:
-    handler: src/handlers/hello.handler
-    events:
-      - http:
-          method: GET
-          path: /hello
+  sendMail:
+    handler: src/handlers/sendMail.handler
+
+custom:
+  bundle:
+    linting: false
