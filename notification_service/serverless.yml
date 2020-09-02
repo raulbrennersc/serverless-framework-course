@@ -1,5 +1,5 @@
 service:
-  name: notification_service
+  name: notification-service
 
 plugins:
   - serverless-bundle
@@ -11,6 +11,8 @@ provider:
   memorySize: 256
   region: sa-east-1
   stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+    - ${file(iam/SendMailIAM.yml):SendMailIAM}
   
 functions:
   sendMail:
