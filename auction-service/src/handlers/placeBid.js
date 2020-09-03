@@ -8,6 +8,7 @@ import placeBidSchema from '../lib/schemas/placeBidSchema';
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 async function placeBid(event, context) {
+    console.log('Sem forbidden1');
     let updatedAuction;
     const { id } = event.pathParameters;
     const { amount } = event.body;
@@ -30,6 +31,8 @@ async function placeBid(event, context) {
     if(auction.highestBid.bidder === email){
       throw new createError.Forbidden(`You already own the highest bid for this auction!`);
     }
+
+    console.log('Sem forbidden');
 
     const params = {
         TableName: process.env.AUCTIONS_TABLE_NAME,
