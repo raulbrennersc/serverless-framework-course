@@ -7,13 +7,20 @@ import { setAuctionPicture } from '../lib/setAuctionPicture';
 
 export async function uploadAuctionPicture(event) {
   const { id } = event.pathParameters;
+  const { email } = event.requestContext.authorizer;
   const auction = await getAuctionById(id);
-  const base64 = event.body.replace(/^data:image\/\w+;base64,/, '');
-  const buffer = Buffer.from(base64, 'base64');
 
   if(!auction){
     throw new createError.NotFound(`Auction with ID "${id}" not found!`);
   }
+
+  if(auction.seller !== email){
+    throw new createError.Forbidden(`You can't update the picture of an auction that is not yours!`);
+  }
+  
+  const base64 = event.body.replace(/^data:image\/\w+;base64,/, '');
+  const buffer = Buffer.from(base64, 'base64');
+
 
   if(auction.status !== 'OPEN') {
     throw new createError.Forbidden('You cannot upload pictures for closed auctions!');
