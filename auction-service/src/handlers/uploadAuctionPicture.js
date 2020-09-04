@@ -1,9 +1,11 @@
 import middy from '@middy/core';
 import httpErrorHandler from '@middy/http-error-handler';
 import createError from 'http-errors'
+import validator from '@middy/validator';
 import { getAuctionById } from "./getAuction";
 import { uploadPictureToS3 } from "../lib/uploadPictureToS3";
 import { setAuctionPicture } from '../lib/setAuctionPicture';
+import uploadAuctionPictureSchema from '../lib/schemas/uploadAuctionPictureSchema';
 
 export async function uploadAuctionPicture(event) {
   const { id } = event.pathParameters;
@@ -17,7 +19,7 @@ export async function uploadAuctionPicture(event) {
   if(auction.seller !== email){
     throw new createError.Forbidden(`You can't update the picture of an auction that is not yours!`);
   }
-  
+
   const base64 = event.body.replace(/^data:image\/\w+;base64,/, '');
   const buffer = Buffer.from(base64, 'base64');
 
@@ -45,4 +47,5 @@ export async function uploadAuctionPicture(event) {
 }
 
 export const handler = middy(uploadAuctionPicture)
-.use(httpErrorHandler());
+  .use(httpErrorHandler())
+  .use(validator({ inputSchema: uploadAuctionPictureSchema }));
